@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj": {}
+    "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj": {
+    "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj",
+        "projectUniqueName": "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj",
         "projectName": "FileViewer",
-        "projectPath": "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj",
-        "packagesPath": "C:\\Users\\macte\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\obj\\",
+        "projectPath": "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj",
+        "packagesPath": "C:\\Users\\v.shebanits\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\macte\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\v.shebanits\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[1.57.0, )"
             },
+            "Google.Apis.Docs.v1": {
+              "target": "Package",
+              "version": "[1.57.0.2716, )"
+            },
             "Google.Apis.Drive.v2": {
               "target": "Package",
               "version": "[1.57.0.2746, )"
@@ -79,7 +83,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

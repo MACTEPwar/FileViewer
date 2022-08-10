@@ -13,9 +13,11 @@ namespace FileViewer.Controllers
     public class FileController : ControllerBase
     {
         readonly GoogleDriveService googleDriveService = null;
-        public FileController(GoogleDriveService googleDriveService)
+        readonly GoogleDocsService googleDocsService = null;
+        public FileController(GoogleDriveService googleDriveService, GoogleDocsService googleDocsService)
         {
             this.googleDriveService = googleDriveService;
+            this.googleDocsService = googleDocsService;
         }
 
         [HttpPost("upload"), DisableRequestSizeLimit]
@@ -29,6 +31,20 @@ namespace FileViewer.Controllers
         public async Task<IActionResult> DeleteFile(string id)
         {
             return BadRequest("No implement");
+        }
+
+        [HttpGet("test/{id}")]
+        public async Task<IActionResult> Test(string id)
+        {
+            try
+            {
+                this.googleDocsService.test(id);
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                return BadRequest("Bad");
+            }
         }
     }
 }
