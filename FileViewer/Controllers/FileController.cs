@@ -14,10 +14,12 @@ namespace FileViewer.Controllers
     {
         readonly GoogleDriveService googleDriveService = null;
         readonly GoogleDocsService googleDocsService = null;
-        public FileController(GoogleDriveService googleDriveService, GoogleDocsService googleDocsService)
+        readonly WordInterop wordInteropService = null;
+        public FileController(GoogleDriveService googleDriveService, GoogleDocsService googleDocsService, WordInterop wordInteropService)
         {
             this.googleDriveService = googleDriveService;
             this.googleDocsService = googleDocsService;
+            this.wordInteropService = wordInteropService;
         }
 
         [HttpPost("upload"), DisableRequestSizeLimit]
@@ -42,6 +44,36 @@ namespace FileViewer.Controllers
                 return Ok();
             }
             catch(Exception e)
+            {
+                return BadRequest("Bad");
+            }
+        }
+
+        [HttpGet("test2/{id}")]
+        public async Task<IActionResult> Test2(string id)
+        {
+            try
+            {
+                //this.googleDocsService.test2(id);
+                this.googleDocsService.insertImage(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Bad");
+            }
+        }
+
+        [HttpGet("test3")]
+        public async Task<IActionResult> Test3()
+        {
+            try
+            {
+                //this.googleDocsService.test2(id);
+                this.wordInteropService.OpenDocument();
+                return Ok();
+            }
+            catch (Exception e)
             {
                 return BadRequest("Bad");
             }

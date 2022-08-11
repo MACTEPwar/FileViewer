@@ -34,6 +34,7 @@ namespace FileViewer
             services.AddSingleton<GoogleOAuthService>();
             services.AddSingleton<GoogleDriveService>();
             services.AddSingleton<GoogleDocsService>();
+            services.AddSingleton<WordInterop>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

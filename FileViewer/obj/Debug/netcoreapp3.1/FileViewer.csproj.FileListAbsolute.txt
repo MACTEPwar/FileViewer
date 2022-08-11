@@ -66,3 +66,7 @@ C:\Users\v.shebanits\source\repos\FileViewer\FileViewer\obj\Debug\netcoreapp3.1\
 C:\Users\v.shebanits\source\repos\FileViewer\FileViewer\obj\Debug\netcoreapp3.1\FileViewer.pdb
 C:\Users\v.shebanits\source\repos\FileViewer\FileViewer\obj\Debug\netcoreapp3.1\FileViewer.genruntimeconfig.cache
 C:\Users\v.shebanits\source\repos\FileViewer\FileViewer\bin\Debug\netcoreapp3.1\Google.Apis.Docs.v1.dll
+C:\Users\macte\source\repos\FileViewer\FileViewer\bin\Debug\netcoreapp3.1\Google.Apis.Docs.v1.dll
+C:\Users\macte\source\repos\FileViewer\FileViewer\bin\Debug\netcoreapp3.1\Microsoft.Office.Interop.Word.dll
+C:\Users\macte\source\repos\FileViewer\FileViewer\bin\Debug\netcoreapp3.1\DocumentFormat.OpenXml.dll
+C:\Users\macte\source\repos\FileViewer\FileViewer\bin\Debug\netcoreapp3.1\System.IO.Packaging.dll
