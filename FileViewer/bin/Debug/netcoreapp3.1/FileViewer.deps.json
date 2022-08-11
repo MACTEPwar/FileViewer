@@ -33,6 +33,7 @@
         "dependencies": {
           "Google.Apis": "1.57.0",
           "Google.Apis.Auth": "1.57.0",
+          "Google.Apis.Docs.v1": "1.57.0.2716",
           "Google.Apis.Drive.v2": "1.57.0.2746",
           "IdentityModel": "6.0.0",
           "WindowsAzure.Storage": "9.3.3",
@@ -369,6 +370,21 @@
         },
         "compile": {
           "lib/netstandard2.0/Google.Apis.Core.dll": {}
+        }
+      },
+      "Google.Apis.Docs.v1/1.57.0.2716": {
+        "dependencies": {
+          "Google.Apis": "1.57.0",
+          "Google.Apis.Auth": "1.57.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.Docs.v1.dll": {
+            "assemblyVersion": "1.57.0.2716",
+            "fileVersion": "1.57.0.2716"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Apis.Docs.v1.dll": {}
         }
       },
       "Google.Apis.Drive.v2/1.57.0.2746": {
@@ -2834,6 +2850,13 @@
       "sha512": "sha512-5wuY88PewhfaWsk37EEHcwU6CFqxpaWMm20ogWLXmaCw8NbTlV/Lna0gjtr2jpTLgb3mtVa7RC1AG/mgi530SQ==",
       "path": "google.apis.core/1.57.0",
       "hashPath": "google.apis.core.1.57.0.nupkg.sha512"
+    },
+    "Google.Apis.Docs.v1/1.57.0.2716": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-l7iQoM6uP7cto/bD4tOfRDUwLiuaEz3gOpR5yLVYnJAvm6Ajdpn/5CTJH0+z7w4X0sAQWyZpCEwj6S2BSwJcJQ==",
+      "path": "google.apis.docs.v1/1.57.0.2716",
+      "hashPath": "google.apis.docs.v1.1.57.0.2716.nupkg.sha512"
     },
     "Google.Apis.Drive.v2/1.57.0.2746": {
       "type": "package",
