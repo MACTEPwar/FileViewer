@@ -70,3 +70,6 @@ C:\Users\macte\source\repos\FileViewer\FileViewer\bin\Debug\netcoreapp3.1\Google
 C:\Users\macte\source\repos\FileViewer\FileViewer\bin\Debug\netcoreapp3.1\Microsoft.Office.Interop.Word.dll
 C:\Users\macte\source\repos\FileViewer\FileViewer\bin\Debug\netcoreapp3.1\DocumentFormat.OpenXml.dll
 C:\Users\macte\source\repos\FileViewer\FileViewer\bin\Debug\netcoreapp3.1\System.IO.Packaging.dll
+C:\Users\v.shebanits\source\repos\FileViewer\FileViewer\bin\Debug\netcoreapp3.1\DocumentFormat.OpenXml.dll
+C:\Users\v.shebanits\source\repos\FileViewer\FileViewer\bin\Debug\netcoreapp3.1\Microsoft.Office.Interop.Word.dll
+C:\Users\v.shebanits\source\repos\FileViewer\FileViewer\bin\Debug\netcoreapp3.1\System.IO.Packaging.dll

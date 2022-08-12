@@ -5011,19 +5011,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\macte\\.nuget\\packages\\": {}
+    "C:\\Users\\v.shebanits\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj",
+      "projectUniqueName": "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj",
       "projectName": "FileViewer",
-      "projectPath": "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj",
-      "packagesPath": "C:\\Users\\macte\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\obj\\",
+      "projectPath": "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj",
+      "packagesPath": "C:\\Users\\v.shebanits\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\macte\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\v.shebanits\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5104,7 +5104,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   },

@@ -64,13 +64,28 @@ namespace FileViewer.Controllers
             }
         }
 
-        [HttpGet("test3")]
-        public async Task<IActionResult> Test3()
+        [HttpGet("AddPageNumbers")]
+        public async Task<IActionResult> AddPageNumbers()
         {
             try
             {
                 //this.googleDocsService.test2(id);
                 this.wordInteropService.OpenDocument();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Bad");
+            }
+        }
+
+        [HttpGet("test3")]
+        public async Task<IActionResult> test3()
+        {
+            try
+            {
+                //this.googleDocsService.test2(id);
+                this.wordInteropService.Test();
                 return Ok();
             }
             catch (Exception e)
