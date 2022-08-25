@@ -4,11 +4,13 @@ using DocumentFormat.OpenXml.Office2010.Word.Drawing;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Vml;
 using DocumentFormat.OpenXml.Wordprocessing;
+using FileViewer.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using A = DocumentFormat.OpenXml.Drawing;
 //using V = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
@@ -25,6 +27,189 @@ namespace FileViewer.Services
             this.AddPageNumber(filePath);
         }
 
+        public void replaceTextToImage()
+        {
+            string filePath = @"./Files/test.docx";
+
+            using (WordprocessingDocument wordDocument =
+            WordprocessingDocument.Open(filePath, true))
+            {
+                // формирую параграф с картинкой
+                MainDocumentPart mainPart = wordDocument.MainDocumentPart;
+                ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Png);
+                Body body = wordDocument.MainDocumentPart.Document.Body;
+
+                using (FileStream stream = new FileStream(@"./Files/test.png", FileMode.Open))
+                {
+                    imagePart.FeedData(stream);
+                }
+
+                Drawing p = AddImageToBody3(wordDocument, mainPart.GetIdOfPart(imagePart));
+
+                // ищу вместо чего вставлять
+                Regex regexText = new Regex("test");
+                string finderText = "test";
+
+                var texts = this.test(wordDocument.MainDocumentPart.Document);
+
+                //foreach (var paragraph in wordDocument.MainDocumentPart.Document.Descendants<Paragraph>())
+                foreach (var paragraph in texts)
+                {
+                    Match match = regexText.Match(paragraph.InnerText);
+                    if (match.Success)
+                    {
+                        //create a new run and set its value to the correct text
+                        //this must be done before the child runs are removed otherwise
+                        //paragraph.InnerText will be empty
+
+                        //newRun.AppendChild(new Text(paragraph.InnerText.Replace(match.Value, "some new value")));
+                        //int ind = paragraph.InnerText.IndexOf(finderText);
+                        string[] strs = paragraph.InnerText.Split(finderText);
+                        List<Run> els = new List<Run>();
+
+                        for (int i = 1; i < strs.Length; i++)
+                        {
+                            Run newRunBefore = new Run();
+                            Run newRun = new Run();
+                            Run newRunAfter = new Run();
+
+                            newRunBefore.AppendChild(new Text(strs[i - 1]));
+                            newRun.AppendChild(p);
+
+                            els.Add(newRunBefore);
+                            els.Add(newRun);
+
+                            if (i == strs.Length - 1)
+                            {
+                                newRunAfter.AppendChild(new Text(strs[i]));
+                                els.Add(newRunAfter);
+                            }
+
+                            //newRunAfter.AppendChild(new Text(strs[i]));
+                        }
+
+
+                        //remove any child runs
+                        var parent = paragraph.Parent.Parent;
+                        paragraph.Remove();
+                        //parent.RemoveAllChildren<Run>();
+                        //add the newly created run
+                        foreach (var el in els)
+                        {
+                            parent.AppendChild(el);
+                        }
+                    }
+                }
+
+                // вставляю
+                //body.InsertAfter(p, body.FirstChild);
+                mainPart.Document.Save();
+
+            }
+
+            //using (WordprocessingDocument wordDoc =
+            //WordprocessingDocument.Open(filePath, true))
+            //{
+            //    string docText = null;
+            //    string image = null;
+            //    using (StreamReader sr = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
+            //    {
+            //        docText = sr.ReadToEnd();
+            //    }
+
+            //    using (FileStream stream = new FileStream(@"./Files/image1.png", FileMode.Open))
+            //    {
+            //        using (StreamReader sr = new StreamReader(stream))
+            //        {
+            //            image = sr.ReadToEnd();
+            //        }
+            //    }
+            //    Regex regexText = new Regex("test");
+            //    docText = regexText.Replace(docText, image);
+
+            //    using (StreamWriter sw = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
+            //    {
+            //        sw.Write(docText);
+            //    }
+            //}
+        }
+
+        public List<OpenXmlElement> testFind()
+        {
+            string filePath = @"./Files/test.docx";
+
+            using (WordprocessingDocument wordDocument =
+            WordprocessingDocument.Open(filePath, true))
+            {
+                return this.test(wordDocument.MainDocumentPart.Document);
+            }
+        }
+
+        public List<OpenXmlElement> test(Document doc)
+        {
+            string finder = "test";
+            List<OpenXmlElement> result = new List<OpenXmlElement>();
+
+            foreach (var paragraph in doc.Descendants<Paragraph>())
+            {
+                result.AddRange(this.find(finder, paragraph));
+            }
+
+            return result;
+
+        }
+
+        public List<OpenXmlElement> find(string str, OpenXmlElement element)
+        {
+            List<OpenXmlElement> result = new List<OpenXmlElement>();
+
+            {
+                //var innerText = element.InnerText;
+                //var innerXml = element.InnerXml;
+                //var texts = element.Descendants<Text>();
+                if (element.LocalName == "t")
+                {
+                    result.Add(element);
+                }
+                //result.AddRange(texts);
+            }
+
+            foreach (var el in element.ChildElements)
+            {
+                List<OpenXmlElement> tempResult = this.find(str, el);
+                result.AddRange(tempResult);
+            }
+
+            return result;
+        }
+
+        public void replaceText()
+        {
+            string filePath = @"./Files/test.docx";
+            using (WordprocessingDocument wordDoc =
+            WordprocessingDocument.Open(filePath, true))
+            {
+                string docText = null;
+                using (StreamReader sr = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
+                {
+                    docText = sr.ReadToEnd();
+                }
+                Regex regexText = new Regex("test");
+                docText = regexText.Replace(docText, "text");
+
+                using (StreamWriter sw = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
+                {
+                    sw.Write(docText);
+                }
+            }
+        }
+
+        public void insertImage()
+        {
+            string filePath = @"./Files/test.docx";
+            this.TTt(filePath);
+        }
+
         public void Test()
         {
             string filePath = @"./Files/test.docx";
@@ -39,7 +224,7 @@ namespace FileViewer.Services
                 //}
                 //AddImageToBody(wordprocessingDocument, mainPart.GetIdOfPart(imagePart));
                 //AddImageToBody2(wordprocessingDocument, mainPart.GetIdOfPart(imagePart));
-                
+
 
             }
 
@@ -89,6 +274,7 @@ namespace FileViewer.Services
             }
         }
 
+        // для watermark
         private void GenerateHeaderPart1Content(HeaderPart headerPart1)
         {
             Header header1 = new Header();
@@ -105,6 +291,7 @@ namespace FileViewer.Services
             headerPart1.Header = header1;
         }
 
+        // для watermark
         private void GenerateImagePart1Content(ImagePart imagePart1)
         {
             System.IO.Stream data = GetBinaryDataStream(imagePart1Data);
@@ -112,13 +299,16 @@ namespace FileViewer.Services
             data.Close();
         }
 
+        // для watermark
         private static string imagePart1Data = "";
 
+        // для watermark
         private static System.IO.Stream GetBinaryDataStream(string base64String)
         {
             return new System.IO.MemoryStream(System.Convert.FromBase64String(base64String));
         }
 
+        // для watermark
         public static void SetWaterMarkPicture(string file)
         {
             FileStream inFile;
@@ -186,29 +376,29 @@ namespace FileViewer.Services
             {
                 // Assign a reference to the existing document body.  
                 Body body = wordDocument.MainDocumentPart.Document.Body;
-                if (wordDocument.ExtendedFilePropertiesPart.Properties.Pages.Text != null)
-                {
-                    pageCount = Convert.ToInt32(wordDocument.ExtendedFilePropertiesPart.Properties.Pages.Text);
-                }
-                int i = 1;
-                StringBuilder pageContentBuilder = new StringBuilder();
-                foreach (var element in body.ChildElements)
-                {
-                    if (element.InnerXml.IndexOf("<w:br w:type=\"page\" />", StringComparison.OrdinalIgnoreCase) < 0)
-                    {
-                        pageContentBuilder.Append(element.InnerText);
-                    }
-                    else
-                    {
-                        pageWithContent.Add(i, pageContentBuilder.ToString());
-                        i++;
-                        pageContentBuilder = new StringBuilder();
-                    }
-                    if (body.LastChild == element && pageContentBuilder.Length > 0)
-                    {
-                        pageWithContent.Add(i, pageContentBuilder.ToString());
-                    }
-                }
+                //if (wordDocument.ExtendedFilePropertiesPart.Properties.Pages.Text != null)
+                //{
+                //    pageCount = Convert.ToInt32(wordDocument.ExtendedFilePropertiesPart.Properties.Pages.Text);
+                //}
+                //int i = 1;
+                //StringBuilder pageContentBuilder = new StringBuilder();
+                //foreach (var element in body.ChildElements)
+                //{
+                //    if (element.InnerXml.IndexOf("<w:br w:type=\"page\" />", StringComparison.OrdinalIgnoreCase) < 0)
+                //    {
+                //        pageContentBuilder.Append(element.InnerText);
+                //    }
+                //    else
+                //    {
+                //        pageWithContent.Add(i, pageContentBuilder.ToString());
+                //        i++;
+                //        pageContentBuilder = new StringBuilder();
+                //    }
+                //    if (body.LastChild == element && pageContentBuilder.Length > 0)
+                //    {
+                //        pageWithContent.Add(i, pageContentBuilder.ToString());
+                //    }
+                //}
 
                 MainDocumentPart mainPart = wordDocument.MainDocumentPart;
                 ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Png);
@@ -217,23 +407,194 @@ namespace FileViewer.Services
                     imagePart.FeedData(stream);
                 }
 
-                Paragraph p = AddImageToBody3(wordDocument, mainPart.GetIdOfPart(imagePart));
+                Drawing newD = AddImageToBody3(wordDocument, mainPart.GetIdOfPart(imagePart));
 
-                foreach(var page in pageWithContent){
+                Paragraph p = new Paragraph(new Run(newD));
 
-                }
+                body.InsertAfter(p, body.FirstChild);
+                mainPart.Document.Save();
+
+                //foreach(var page in pageWithContent){
+
+                //}
             }
         }
 
-        private Paragraph AddImageToBody3(WordprocessingDocument wordDoc, string relationshipId)
+        private Drawing FormImage(WordprocessingDocument wordDoc, ImageOptions options = null)
         {
+            if (options == null)
+            {
+                options = new ImageOptions();
+            }
+
+            MainDocumentPart mainPart = wordDoc.MainDocumentPart;
+            ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Png);
+
+            using (FileStream stream = new FileStream(@"./Files/test.png", FileMode.Open))
+            {
+                imagePart.FeedData(stream);
+            }
+
+            string relationshipId = mainPart.GetIdOfPart(imagePart);
+
+            // new graphicFrameLocks
+            var graphicFrameLocks = new A.GraphicFrameLocks()
+            {
+                NoChangeAspect = true
+            };
+            graphicFrameLocks.AddNamespaceDeclaration("a", "http://schemas.openxmlformats.org/drawingml/2006/main");
+
+            // new useLocalDpi
+            var useLocalDpi = new UseLocalDpi() { Val = false };
+            useLocalDpi.AddNamespaceDeclaration("a14", "http://schemas.microsoft.com/office/drawing/2010/main");
+
+            //new picture
+            var picture = new PIC.Picture(
+                new PIC.NonVisualPictureProperties(
+                    new PIC.NonVisualDrawingProperties()
+                    {
+                        Id = (UInt32Value)1U,
+                        Name = "image1.png"
+                    },
+                    new PIC.NonVisualPictureDrawingProperties()
+                ),
+                new PIC.BlipFill(
+                    new A.Blip(
+                        new A.BlipExtensionList(
+                            new A.BlipExtension(
+                                useLocalDpi
+                            )
+                            {
+                                Uri = "{28A0092B-C50C-407E-A947-70E740481C1C}"
+                            }
+                        )
+                    )
+                    { Embed = relationshipId },
+                    new A.Stretch(
+                        new A.FillRectangle()
+                    )
+                ),
+                new PIC.ShapeProperties(
+                    new A.Transform2D(
+                        new A.Offset() { X = 0L, Y = 0L },
+                        new A.Extents() { Cx = 1080000L, Cy = 1080000L }
+                    ),
+                    new A.PresetGeometry(
+                        new A.AdjustValueList()
+                    ) { Preset = A.ShapeTypeValues.Rectangle }
+                )
+            );
+            picture.AddNamespaceDeclaration("pic", "http://schemas.openxmlformats.org/drawingml/2006/picture");
+
+            // new graphic
+            var graphic = new A.Graphic(
+                new A.GraphicData(picture)
+                {
+                    Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture"
+                }
+            );
+            graphic.AddNamespaceDeclaration("a", "http://schemas.openxmlformats.org/drawingml/2006/main");
+
+            //new drawing
+            return new Drawing(
+                new DW.Anchor(
+                    new DW.SimplePosition()
+                    {
+                        X = 0L,
+                        Y = 0L
+                    },
+                    new DW.HorizontalPosition(
+                        new DW.PositionOffset()
+                        {
+                            Text = "10"
+                        })
+                    {
+                        RelativeFrom = DW.HorizontalRelativePositionValues.Character
+                    },
+                    new DW.VerticalPosition(
+                        new DW.PositionOffset()
+                        {
+                            Text = "8890"
+                        })
+                    { RelativeFrom = DW.VerticalRelativePositionValues.Paragraph },
+                    new DW.Extent()
+                    {
+                        Cx = options.Width * 360000L,
+                        Cy = options.Height * 360000L
+                    },
+                    new DW.EffectExtent()
+                    {
+                        LeftEdge = 0L,
+                        TopEdge = 0L,
+                        RightEdge = 0L,
+                        BottomEdge = 0L
+                    },
+                    new DW.WrapNone(),
+                    new DW.DocProperties()
+                    {
+                        Id = (UInt32Value)1U,
+                        Name = "Рисунок 1"
+                    },
+                    new DW.NonVisualGraphicFrameDrawingProperties(graphicFrameLocks),
+                    graphic,
+                    new RelativeWidth(
+                        new PercentageWidth()
+                        {
+                            Text = "0"
+                        }
+                    )
+                    {
+                        ObjectId = SizeRelativeHorizontallyValues.Page
+                    },
+                    new RelativeHeight(
+                        new PercentageWidth()
+                        {
+                            Text = "0"
+                        }
+                    )
+                    {
+                        RelativeFrom = SizeRelativeVerticallyValues.Page
+                    }
+                )
+                {
+                    DistanceFromTop = (UInt32Value)0U,
+                    DistanceFromBottom = (UInt32Value)0U,
+                    DistanceFromLeft = (UInt32Value)114300U,
+                    DistanceFromRight = (UInt32Value)114300U,
+                    SimplePos = false,
+                    RelativeHeight = (UInt32Value)251658240U,
+                    BehindDoc = true,
+                    Locked = false,
+                    LayoutInCell = true,
+                    AllowOverlap = true,
+                    EditId = "0B572E2B",
+                    AnchorId = "4DC14A96"
+                    //HorizontalPosition = new DW.HorizontalPosition()
+                    //{
+                    //    RelativeFrom = DW.HorizontalRelativePositionValues.Character
+                    //}
+                });
+        }
+
+        private Drawing AddImageToBody3(WordprocessingDocument wordDoc, string relationshipId, ImageOptions options = null)
+        {
+            if (options == null)
+            {
+                options = new ImageOptions();
+            }
 
             DW.Anchor anchor1 = new DW.Anchor() { DistanceFromTop = (UInt32Value)0U, DistanceFromBottom = (UInt32Value)0U, DistanceFromLeft = (UInt32Value)114300U, DistanceFromRight = (UInt32Value)114300U, SimplePos = false, RelativeHeight = (UInt32Value)251658240U, BehindDoc = true, Locked = false, LayoutInCell = true, AllowOverlap = true, EditId = "0B572E2B", AnchorId = "4DC14A96" };
             DW.SimplePosition simplePosition1 = new DW.SimplePosition() { X = 0L, Y = 0L };
 
-            DW.HorizontalPosition horizontalPosition1 = new DW.HorizontalPosition() { RelativeFrom = DW.HorizontalRelativePositionValues.Margin };
-            DW.HorizontalAlignment horizontalAlignment1 = new DW.HorizontalAlignment();
-            horizontalAlignment1.Text = "right";
+            //DW.HorizontalPosition horizontalPosition1 = new DW.HorizontalPosition() { RelativeFrom = DW.HorizontalRelativePositionValues.Margin };
+            //DW.HorizontalAlignment horizontalAlignment1 = new DW.HorizontalAlignment();
+            //horizontalAlignment1.Text = "right";
+
+            // Говорю что позицию хочу задавать в символах.
+            DW.HorizontalPosition horizontalPosition1 = new DW.HorizontalPosition() { RelativeFrom = DW.HorizontalRelativePositionValues.Character };
+            DW.PositionOffset horizontalAlignment1 = new DW.PositionOffset();
+            // отступаю 10 символов
+            horizontalAlignment1.Text = "10";
 
             horizontalPosition1.Append(horizontalAlignment1);
 
@@ -242,7 +603,9 @@ namespace FileViewer.Services
             positionOffset1.Text = "8890";
 
             verticalPosition1.Append(positionOffset1);
-            DW.Extent extent1 = new DW.Extent() { Cx = 5940425L, Cy = 4455160L };
+            //DW.Extent extent1 = new DW.Extent() { Cx = 5940425L, Cy = 4455160L };
+            //DW.Extent extent1 = new DW.Extent() { Cx = 1000000L, Cy = 1000000L };
+            DW.Extent extent1 = new DW.Extent() { Cx = options.Width * 360000L, Cy = options.Height * 360000L };
             DW.EffectExtent effectExtent1 = new DW.EffectExtent() { LeftEdge = 0L, TopEdge = 0L, RightEdge = 0L, BottomEdge = 0L };
             DW.WrapNone wrapNone1 = new DW.WrapNone();
             DW.DocProperties docProperties1 = new DW.DocProperties() { Id = (UInt32Value)1U, Name = "Рисунок 1" };
@@ -298,7 +661,8 @@ namespace FileViewer.Services
 
             A.Transform2D transform2D1 = new A.Transform2D();
             A.Offset offset1 = new A.Offset() { X = 0L, Y = 0L };
-            A.Extents extents1 = new A.Extents() { Cx = 5940425L, Cy = 4455160L };
+            //A.Extents extents1 = new A.Extents() { Cx = 5940425L, Cy = 4455160L };
+            A.Extents extents1 = new A.Extents() { Cx = 1080000L, Cy = 1080000L };
 
             transform2D1.Append(offset1);
             transform2D1.Append(extents1);
@@ -345,7 +709,9 @@ namespace FileViewer.Services
 
             IEnumerable<SectionProperties> sections = wordDoc.MainDocumentPart.Document.Body.Elements<SectionProperties>();
 
-            return new Paragraph(new Run(new Drawing(anchor1)));
+            return new Drawing(anchor1);
+
+            //return new Paragraph(new Run(new Drawing(anchor1)));
 
             //wordDoc.MainDocumentPart.Document.Body.InsertAfter(new Paragraph(new Run(new Drawing(anchor1))), wordDoc.MainDocumentPart.Document.Body.FirstChild);
 

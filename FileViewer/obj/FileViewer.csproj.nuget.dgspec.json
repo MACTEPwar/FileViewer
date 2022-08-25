@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj": {}
+    "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj": {
+    "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj",
+        "projectUniqueName": "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj",
         "projectName": "FileViewer",
-        "projectPath": "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj",
-        "packagesPath": "C:\\Users\\v.shebanits\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\v.shebanits\\source\\repos\\FileViewer\\FileViewer\\obj\\",
+        "projectPath": "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\FileViewer.csproj",
+        "packagesPath": "C:\\Users\\macte\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\macte\\source\\repos\\FileViewer\\FileViewer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\v.shebanits\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\macte\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -66,7 +66,7 @@
             },
             "Microsoft.Office.Interop.Word": {
               "target": "Package",
-              "version": "[15.0.4797.1003, )"
+              "version": "[15.0.4797.1004, )"
             },
             "System.IO.Packaging": {
               "target": "Package",
@@ -95,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
         }
       }
     }

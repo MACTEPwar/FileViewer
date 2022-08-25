@@ -93,5 +93,66 @@ namespace FileViewer.Controllers
                 return BadRequest("Bad");
             }
         }
+
+
+        // api/file/insertImage
+        [HttpGet("insertImage")]
+        public async Task<IActionResult> InsertImage()
+        {
+            try
+            {
+                this.wordInteropService.insertImage();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Bad");
+            }
+        }
+
+        // api/file/replaceText
+        [HttpGet("replaceText")]
+        public async Task<IActionResult> ReplaceText()
+        {
+            try
+            {
+                this.wordInteropService.replaceText();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Bad");
+            }
+        }
+
+        // api/file/replaceTextToImage
+        [HttpGet("replaceTextToImage")]
+        public async Task<IActionResult> ReplaceTextToImage()
+        {
+            try
+            {
+                this.wordInteropService.replaceTextToImage();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Bad");
+            }
+        }
+
+        // api/file/finder
+        [HttpGet("finder")]
+        public async Task<IActionResult> Finder()
+        {
+            try
+            {
+                var res = this.wordInteropService.testFind();
+                return new JsonResult(res);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Bad");
+            }
+        }
     }
 }
